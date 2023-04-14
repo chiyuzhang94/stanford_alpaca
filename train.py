@@ -198,6 +198,8 @@ def train():
         cache_dir=training_args.cache_dir,
     )
 
+    print(model_args.model_name_or_path)
+    
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         model_args.model_name_or_path,
         cache_dir=training_args.cache_dir,
