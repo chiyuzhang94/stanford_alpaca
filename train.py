@@ -199,13 +199,13 @@ def train():
     )
 
     print(model_args.model_name_or_path)
-    
+
     tokenizer = transformers.AutoTokenizer.from_pretrained(
         model_args.model_name_or_path,
         cache_dir=training_args.cache_dir,
         model_max_length=training_args.model_max_length,
         padding_side="right",
-        use_fast=False,
+        use_fast=True,
     )
     if tokenizer.pad_token is None:
         smart_tokenizer_and_embedding_resize(
