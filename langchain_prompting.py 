@@ -1,0 +1,56 @@
+from langchain import PromptTemplate, HuggingFaceHub, LLMChain
+from langchain.llms import HuggingFacePipeline
+import os
+import warnings
+warnings.filterwarnings("ignore")
+
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = read(open("../token.txt"))
+
+ 
+# main method
+
+
+if __name__=="__main__":
+    
+    from langchain import PromptTemplate
+    
+    
+    params = {
+        "temperature":0.5,
+        "top_p":0.9,
+        "top_k":10,
+        "do_sample":True, 
+        "max_length":512, 
+        "num_return_sequences":1
+    }
+
+    template = """Question: {question}
+
+    Answer: """
+    prompt = PromptTemplate(
+            template=template,
+        input_variables=['question']
+    )
+
+    # user question
+    question = "Who is the president of United States?"
+    
+
+    
+    llm = HuggingFacePipeline.from_model_id(
+        "/home/awaheed/scratch/InstructTuning/output/llama/checkpoint-1000", 
+        task="text-generation", 
+        device=0,
+        model_kwargs=params
+    )
+    
+    # create prompt template > LLM chain
+    llm_chain = LLMChain(
+        prompt=prompt,
+        llm=llm
+    )
+    
+    while True:
+        
+        question = input("Enter a prompt: ")
+        print(llm_chain.run(question))
